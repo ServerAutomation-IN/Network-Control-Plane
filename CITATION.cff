@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use Network Control Plane in your research, infrastructure, or product, please cite it as below."
+title: "Network Control Plane: Enterprise-Grade Provider-Neutral Workload Networking Platform"
+version: 1.0.0-GA
+date-released: 2026-10-11
+url: "https://github.com/ServerAutomation-IN/Network-Control-Plane"
+repository-code: "https://github.com/ServerAutomation-IN/Network-Control-Plane"
+license: Apache-2.0
+authors:
+  - name: "Network Control Plane Authors & Contributors"
+abstract: "A provider-neutral control plane for container and workload networking featuring unified discovery, interactive topology visualization, IPAM capacity and conflict detection, declarative GitOps reconciliation, and human-in-the-loop agentic AI assistance."
+keywords:
+  - networking
+  - container-networking
+  - control-plane
+  - topology
+  - ipam
+  - gitops
+  - docker
+  - ebpf
+  - cilium

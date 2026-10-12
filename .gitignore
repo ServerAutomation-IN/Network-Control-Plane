@@ -1,0 +1,88 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+scratch/
+build/
+*.egg-info/
+*.egg
+
+# Database & Storage
+*.db
+*.sqlite
+*.sqlite3
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+*.local
+.nx/
+
+# Logs & Temporary
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Explicit Backend Paths
+backend/.env
+backend/.venv/
+backend/.pytest_cache/
+backend/scratch/
+
+# Internal Documentation & Pitch Decks
+*.pptx
+docs/announcements/Social_and_Community_Distribution_Kit.md
+docs/announcements/Launch_Playbook_and_Checklist.md
+docs/implementation/Tasks.md
+docs/roadmap/MVP_Definitions.md
+docs/roadmap/Epics.md
+docs/architecture/api.md
+docs/architecture/components.md
+docs/architecture/data-model.md
+docs/architecture/security.md
+docs/product/problem-statement.md
+docs/product/personas.md
+docs/product/use-cases.md
+docs/product/competitive-analysis.md
+docs/implementation/definition-of-done.md
+docs/implementation/development-workflow.md
+docs/implementation/release-gates.md
+docs/implementation/testing-strategy.md
+docs/roadmap/feature-intake.md
+docs/roadmap/release-plan.md
+*.xml

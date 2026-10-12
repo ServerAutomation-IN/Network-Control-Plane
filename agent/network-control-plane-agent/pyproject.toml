@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "network-control-plane-agent"
+version = "0.1.0"
+description = "Provider host agent daemon for Network Control Plane"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.25.0",
+    "docker>=6.1.0",
+    "pydantic>=2.5.0",
+]
+
+[project.scripts]
+network-control-plane-agent = "main:main"

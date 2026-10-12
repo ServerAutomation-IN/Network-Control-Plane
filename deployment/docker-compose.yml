@@ -1,0 +1,99 @@
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: network-control-plane-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+      - path: ../backend/.env
+        required: false
+    environment:
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=network_control_plane
+      - REDIS_HOST=redis
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - control_plane_frontend
+      - control_plane_backend
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: network-control-plane-frontend
+    ports:
+      - "3001:3000"
+    networks:
+      - control_plane_frontend
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/ || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: network-control-plane-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=network_control_plane
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - control_plane_backend
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d network_control_plane" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  redis:
+    image: redis:7-alpine
+    container_name: network-control-plane-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - control_plane_backend
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+networks:
+  control_plane_frontend:
+    name: control_plane_frontend
+    driver: bridge
+  control_plane_backend:
+    name: control_plane_backend
+    driver: bridge
+
+volumes:
+  postgres_data:

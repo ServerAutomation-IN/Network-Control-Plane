@@ -1,0 +1,65 @@
+name: Bug Report
+description: Report an issue or unexpected behavior in Network Control Plane
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue with **Network Control Plane**!
+        Please ensure you are not submitting a security vulnerability here. For security issues, refer to [SECURITY.md](file:///c:/Users/vsrivastava/Documents/GH-ServerAutomation-IN/Network-Control-Plane/SECURITY.md).
+  - type: input
+    id: version
+    attributes:
+      label: Network Control Plane Version
+      description: What version of Network Control Plane are you running?
+      placeholder: "e.g., v1.0.0-GA or commit hash"
+    validations:
+      required: true
+  - type: dropdown
+    id: provider_runtime
+    attributes:
+      label: Target Provider Runtime
+      description: Which provider environment were you operating against?
+      options:
+        - Docker Engine (standalone)
+        - Docker Swarm
+        - Podman
+        - Cilium eBPF CNI
+        - AWS VPC
+        - Azure VNet
+        - GCP VPC
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem Description
+      description: Clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can maintainers reproduce this issue?
+      placeholder: |
+        1. Start control plane with 'docker compose up'
+        2. Navigate to Topology Canvas
+        3. Attempt to attach container to network 'xyz'
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs or Error Output
+      description: Include relevant backend, frontend console, or container logs.
+      render: shell

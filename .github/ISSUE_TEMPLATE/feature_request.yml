@@ -1,0 +1,44 @@
+name: Feature Request
+description: Propose a new feature, provider adapter, or enhancement for Network Control Plane
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We welcome proposals for extending **Network Control Plane**!
+        Please review [Blueprint.md](file:///c:/Users/vsrivastava/Documents/GH-ServerAutomation-IN/Network-Control-Plane/docs/product/Blueprint.md) and [Requirements.md](file:///c:/Users/vsrivastava/Documents/GH-ServerAutomation-IN/Network-Control-Plane/docs/requirements/Requirements.md) to check alignment with platform vision.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of what the problem is.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the proposed solution
+      description: Describe the design or capability you would like to see added.
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component Area
+      options:
+        - Topology Canvas / UI
+        - IPAM Service
+        - Policy Engine & RBAC
+        - GitOps & Drift Engine
+        - Provider Adapters (Docker, Podman, Kubernetes, Cloud VPC)
+        - Key Vault / Secrets Integration
+        - AI Assistant / Agent
+        - Deployment / Helm / Compose
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you have considered
+      description: Any alternative solutions or workarounds you've explored.
