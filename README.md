@@ -17,34 +17,43 @@ The **Network Control Plane** is an enterprise-grade, open-source, and provider-
 ```text
                ┌─────────────────────────────────────────────────────────────┐
                │                React 18 / Vite Web Dashboard                │
-               │        (Topology Canvas, IPAM, Policy Engine, GitOps)       │
+               │  (Topology Canvas, IPAM, Policy, GitOps, Host Onboarding)   │
                └──────────────────────────────┬──────────────────────────────┘
-                                              │ REST API / WebSockets / SSE
+                                              │ REST API / WebSockets / SSE / Webhooks
                                               ▼
                ┌─────────────────────────────────────────────────────────────┐
                │              FastAPI Control Plane API Gateway              │
-               │       (RBAC, OIDC/SAML SSO, Audit Log, OpenAPI Docs)        │
+               │   (RBAC, OIDC/SAML SSO, Cloud Ingestion Webhooks, Audit)    │
                └──────┬───────────────────────┬──────────────────────┬───────┘
                       │                       │                      │
                       ▼                       ▼                      ▼
 ┌───────────────────────────┐   ┌──────────────────────────┐   ┌──────────────────────────┐
-│  Provider Adapters Engine │   │   GitOps & Policy Engine │   │ Enterprise Secrets Engine│
+│ Pluggable Provider Engine │   │   GitOps & Policy Engine │   │ Enterprise Secrets Engine│
 │ ┌───────────────────────┐ │   │ ┌──────────────────────┐ │   │ ┌──────────────────────┐ │
 │ │ Container & CNI:      │ │   │ │ Git Sync (GH/GL/BB)  │ │   │ │ HashiCorp Vault      │ │
-│ │ • Docker Engine       │ │   │ │ Drift Detection      │ │   │ │ AWS Secrets Manager  │ │
-│ │ • Docker Swarm        │ │   │ │ Declarative YAML     │ │   │ │ Azure Key Vault      │ │
-│ │ • Podman / Containerd │ │   │ └──────────────────────┘ │   │ │ Local Fernet AES-256 │ │
-│ │ • Cilium eBPF CNI     │ │   └─────────────┬────────────┘   │ └──────────────────────┘ │
-│ ├───────────────────────┤ │                 │                └──────────────────────────┘
-│ │ Enterprise Cloud VPCs:│ │                 ▼
-│ │ • AWS VPC (boto3)     │ │   ┌──────────────────────────┐
-│ │ • Azure VNet          │ │   │ Redis / ARQ Worker Queue │
-│ │ • GCP VPC Compute     │ │   │ (Async Mutation Engine)  │
-│ └───────────────────────┘ │   └─────────────┬────────────┘
-└──────────────┬────────────┘                 │
-               │                              ▼
-               │                ┌──────────────────────────┐
-               └───────────────►│ PostgreSQL 16 DB Store   │
+│ │ • Docker Engine/Swarm │ │   │ │ Drift Reconciliation │ │   │ │ AWS Secrets Manager  │ │
+│ │ • Podman / CRI-O      │ │   │ │ Declarative YAML     │ │   │ │ Azure Key Vault      │ │
+│ │ • Kubernetes / Cilium │ │   │ └──────────────────────┘ │   │ │ Local Fernet AES-256 │ │
+│ ├───────────────────────┤ │   └─────────────┬────────────┘   │ └──────────────────────┘ │
+│ │ Hyperscale Cloud VPC: │ │                 │                └─────────────┬────────────┘
+│ │ • AWS VPC (boto3)     │ │                 ▼                              │
+│ │ • Azure VNet          │ │   ┌──────────────────────────┐                 │
+│ │ • GCP Cloud VPC       │ │   │ Redis / ARQ Worker Queue │                 │
+│ ├───────────────────────┤ │   │ (Async Mutation Engine)  │                 │
+│ │ Hypervisors & HCI:    │ │   └─────────────┬────────────┘                 │
+│ │ • VMware vSphere      │ │                 │                              ▼
+│ │ • Microsoft Hyper-V   │ │                 │                ┌──────────────────────────┐
+│ │ • Nutanix AHV (Prism) │ │                 │                │ Host Agent & Collectors  │
+│ ├───────────────────────┤ │                 │                │ ┌──────────────────────┐ │
+│ │ Cloud Event Webhooks: │ │                 │                │ │ Bidirectional WS     │ │
+│ │ • AWS EventBridge/SNS │ │                 │                │ │ Linux Netlink/Bridge │ │
+│ │ • Azure Event Grid    │ │                 │                │ │ Hyper-V vSwitch      │ │
+│ │ • GCP Cloud Pub/Sub   │ │                 │                │ │ Docker/Podman Engine │ │
+│ └───────────────────────┘ │                 │                │ └──────────────────────┘ │
+└──────────────┬────────────┘                 │                └─────────────┬────────────┘
+               │                              ▼                              │
+               │                ┌──────────────────────────┐                 │
+               └───────────────►│ PostgreSQL 16 DB Store   │◄────────────────┘
                                 │ (Inventory, Jobs, Audit) │
                                 └──────────────────────────┘
 ```
@@ -53,12 +62,14 @@ The **Network Control Plane** is an enterprise-grade, open-source, and provider-
 
 ## ✨ Key Platform Features
 
-- **🔍 Unified Infrastructure Discovery:** Automatically inspect networks, subnets, gateways, and workload endpoints across Docker Engine, Swarm, Podman, Containerd, Cilium eBPF, and Cloud VPCs.
+- **🔍 Unified Infrastructure Discovery:** Automatically inspect networks, subnets, gateways, and workload endpoints across Docker Engine, Swarm, Podman, Kubernetes/Cilium, AWS VPC, Azure VNet, GCP Cloud VPC, VMware vSphere, Microsoft Hyper-V, Nutanix AHV, and Linux host bridges.
 - **🗺️ Interactive Topology Canvas:** Render container and workload network graphs using React Flow with ELK.js layout engines, featuring pan, zoom, real-time WebSocket/SSE live updates, and side-panel inspection.
 - **🔢 IP Address Management (IPAM):** Real-time subnet capacity tracking, allocation density, static IP validation, and automatic cross-network CIDR overlap / gateway conflict detection.
 - **🛡️ Governance & Policy Engine:** Enforce declarative governance rules (approved driver list, CIDR boundaries, required label metadata, naming conventions) and RBAC roles (`Administrator`, `Operator`, `Viewer`).
 - **⚡ Safety Risk Analysis:** Pre-execution safety evaluation prior to network mutations (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`) to prevent accidental downtime.
 - **🔄 GitOps & Desired-State Sync:** Continuous reconciliation of declarative YAML state files (`network-control-plane/v1`) from Git repositories (GitHub, GitLab, Bitbucket) with background task execution queues.
+- **☁️ Real-Time Cloud Ingestion Webhooks:** Ingest push events from AWS EventBridge/SNS, Azure Event Grid, GCP Cloud Pub/Sub, and VMware vSphere for instant drift-free inventory delta synchronization.
+- **🚀 Host Agent & Pluggable Runtimes:** Lightweight host agent daemon (`network-control-plane-agent`) with bidirectional WebSocket command dispatch and pluggable collectors for Linux Netlink, Hyper-V vSwitch, Docker, and Podman.
 - **🔑 Enterprise Secrets & Key Vault Integration:** Zero-trust credentials resolution supporting dynamic URI references (`vault://`, `aws-secret://`, `azure-vault://`) via HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, and Local Fernet AES-256.
 - **🔐 Enterprise SSO & Outbound Webhooks:** OIDC and SAML 2.0 authentication integration (Okta, Entra ID, Keycloak) paired with HMAC SHA-256 signed outbound webhook dispatchers.
 - **🤖 Human-in-the-Loop Agentic AI:** LangGraph diagnostic agent providing natural language inventory search, reachability analysis, and governed remediation approval workflows.
@@ -69,10 +80,13 @@ The **Network Control Plane** is an enterprise-grade, open-source, and provider-
 
 | Category | Supported Platforms & Integrations |
 |---|---|
-| **Container Runtimes** | Docker Engine 24.0+, Docker Swarm Overlay, Podman 4.0+, Containerd |
-| **CNI Plugins** | Cilium eBPF CNI, Bridge, Macvlan, Overlay |
-| **Cloud VPCs** | AWS VPC, Azure VNet, Google Cloud Platform (GCP) VPC |
-| **Secrets Managers** | HashiCorp Vault (KV v1/v2), AWS Secrets Manager, Azure Key Vault, Local Fernet |
+| **Container Runtimes** | Docker Engine 24.0+, Docker Swarm Overlay, Podman 4.0+, Containerd / CRI-O |
+| **Kubernetes & CNI** | Kubernetes 1.28+, OpenShift, Cilium eBPF CNI, Linux Bridge, Macvlan, Overlay |
+| **Hyperscale Cloud VPCs** | AWS VPC, Azure VNet, Google Cloud Platform (GCP) VPC |
+| **Hypervisors & Private Cloud** | VMware vSphere 7.0+/8.0+, Microsoft Hyper-V / SCVMM, Nutanix AHV (Prism Element/Central) |
+| **Host Agent & OS Engines** | Bidirectional Python agent (`network-control-plane-agent`), Linux Netlink/Bridge, Hyper-V vSwitch, Docker/Podman collectors |
+| **Cloud Event Ingestion** | AWS EventBridge & SNS, Azure Event Grid, GCP Cloud Pub/Sub, VMware vSphere Events |
+| **Secrets Managers** | HashiCorp Vault (KV v1/v2), AWS Secrets Manager, Azure Key Vault, Local Fernet AES-256 |
 | **Enterprise Identity** | OpenID Connect (OIDC), SAML 2.0 (Okta, Microsoft Entra ID, Keycloak) |
 | **Git Repositories** | GitHub, GitLab, Bitbucket Cloud / Server |
 | **Database & Queue** | PostgreSQL 16+, Redis 7+ (ARQ async task queue) |
