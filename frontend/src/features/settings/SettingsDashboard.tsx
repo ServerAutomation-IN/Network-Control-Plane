@@ -660,10 +660,10 @@ export const SettingsDashboard: React.FC = () => {
           {/* LLM Provider Selector Cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
             {[
-              { id: 'ollama', title: '🦙 Ollama (Local LLM)', desc: 'Zero external dependencies, local REST endpoint' },
-              { id: 'openai', title: '🟢 OpenAI (GPT-4o)', desc: 'Cloud LLM via OpenAI API' },
+              { id: 'ollama', title: '🦙 Ollama (Local)', desc: 'Local private inference (Llama, DeepSeek, Qwen)' },
+              { id: 'openai', title: '🟢 OpenAI', desc: 'OpenAI API (GPT-4o, o1, o3-mini series)' },
               { id: 'azure', title: '🔷 Azure OpenAI', desc: 'Enterprise Azure OpenAI deployment' },
-              { id: 'anthropic', title: '🟧 Anthropic (Claude 3.5)', desc: 'Claude 3.5 Sonnet completion engine' },
+              { id: 'anthropic', title: '🟧 Anthropic', desc: 'Anthropic API (Claude 3.7 / 3.5 Sonnet, Haiku)' },
             ].map((m) => (
               <div
                 key={m.id}
@@ -720,10 +720,10 @@ export const SettingsDashboard: React.FC = () => {
                 {llmProvider === 'ollama'
                   ? 'Model Identifier / Tag:'
                   : llmProvider === 'openai'
-                  ? 'OpenAI Model (e.g., gpt-4o, gpt-4o-mini):'
+                  ? 'OpenAI Model (e.g., gpt-4o, o3-mini):'
                   : llmProvider === 'azure'
                   ? 'Azure Model / Deployment Name:'
-                  : 'Anthropic Model (e.g., claude-3-5-sonnet):'}
+                  : 'Anthropic Model (e.g., claude-3-7-sonnet, claude-3-5-sonnet):'}
               </label>
               <input
                 type="text"
@@ -731,12 +731,12 @@ export const SettingsDashboard: React.FC = () => {
                 onChange={(e) => updateActiveConfig('model', e.target.value)}
                 placeholder={
                   llmProvider === 'ollama'
-                    ? 'qwen2.5-coder:7b, llama3, gpt-oss:20b'
+                    ? 'qwen2.5-coder:7b, llama3.3, deepseek-r1'
                     : llmProvider === 'openai'
                     ? 'gpt-4o'
                     : llmProvider === 'azure'
                     ? 'gpt-4o-deployment'
-                    : 'claude-3-5-sonnet-20241022'
+                    : 'claude-3-7-sonnet-20250219'
                 }
                 style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.85rem' }}
               />
