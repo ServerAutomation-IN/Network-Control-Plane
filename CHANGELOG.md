@@ -50,8 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Cloud Key Vaults:** Adapters for AWS Secrets Manager and Azure Key Vault.
 - **Local AES-256 Fernet Encryption:** Symmetric encryption at rest for stored credentials and TLS host certificates.
 
-#### 7. Governed Human-in-the-Loop Agentic AI
-- **LangGraph Diagnostic Agent:** Multi-step agentic graph diagnosing connectivity failures and packet reachability paths.
+#### 7. Governed Human-in-the-Loop AI Diagnostics
+- **Reachability Diagnostic Engine:** Automated topology graph traversal diagnosing connectivity failures and packet reachability paths.
 - **Natural Language Inventory Queries:** Search hosts, networks, and containers using plain English.
 - **Mandatory Approval Modal:** Strict human verification requirement before executing AI-generated remediation proposals.
 - **Comprehensive AI Audit Trail:** Prompt, reasoning trace, proposed payload, and approving user logged to immutable audit records.

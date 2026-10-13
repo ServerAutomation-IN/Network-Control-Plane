@@ -72,7 +72,7 @@ The **Network Control Plane** is an enterprise-grade, open-source, and provider-
 - **🚀 Host Agent & Pluggable Runtimes:** Lightweight host agent daemon (`network-control-plane-agent`) with bidirectional WebSocket command dispatch and pluggable collectors for Linux Netlink, Hyper-V vSwitch, Docker, and Podman.
 - **🔑 Enterprise Secrets & Key Vault Integration:** Zero-trust credentials resolution supporting dynamic URI references (`vault://`, `aws-secret://`, `azure-vault://`) via HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, and Local Fernet AES-256.
 - **🔐 Enterprise SSO & Outbound Webhooks:** OIDC and SAML 2.0 authentication integration (Okta, Entra ID, Keycloak) paired with HMAC SHA-256 signed outbound webhook dispatchers.
-- **🤖 Human-in-the-Loop Agentic AI:** LangGraph diagnostic agent providing natural language inventory search, reachability analysis, and governed remediation approval workflows.
+- **🤖 Governed AI Diagnostics:** Automated topology reachability analysis and natural language queries, protected by mandatory human-in-the-loop approval gates.
 
 ---
 
