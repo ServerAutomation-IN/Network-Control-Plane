@@ -257,9 +257,9 @@ export const AIAssistantDrawer: React.FC = () => {
             >
               <option value="mock">Mock LLM (Deterministic)</option>
               <option value="ollama">Ollama (Local LLM)</option>
-              <option value="openai">OpenAI (GPT-4o)</option>
+              <option value="openai">OpenAI</option>
               <option value="azure">Azure OpenAI</option>
-              <option value="anthropic">Anthropic (Claude 3.5)</option>
+              <option value="anthropic">Anthropic</option>
             </select>
           </div>
 
